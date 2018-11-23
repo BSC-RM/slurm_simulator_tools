@@ -3,23 +3,18 @@
 #SBATCH -o OUTPUTS/test1_%j.out
 #SBATCH -e OUTPUTS/test1_%j.err
 #SBATCH -c 4
-##SBATCH -p interactive
 #SBATCH -t 2:00:00
-#SBATCH --qos debug
 
-unset OMP_NUM_THREADS
-source enableenv_mn4
 workload_name=$(basename $1)
-sim_path="/gpfs/scratch/bsc15/bsc15800/simulation_"$SLURM_JOBID$workload_name"serialq"$2
+sim_path=$PWD"/simulation_"$SLURM_JOBID$workload_name"bfq"$2
 rm -rf $sim_path
 
 mkdir -p $sim_path
 cp -r install/* $sim_path
-workload="/home/bsc15/bsc15800/phd/slurm-git/slurm-simulator/"$1
-workload_swf=$workload".swf"
+workload=$1
 control_host="$SLURM_NODELIST"
 
-slave_nnodes=49
+slave_nnodes= #EDIT: number of computing nodes
 
 slurm_conf_template="$sim_path/slurm_conf/slurm.conf.template"
 
@@ -60,6 +55,9 @@ export SLURM_SIM_ID=$SLURM_JOBID
 sim_mgr -f -w $workload
 
 #generate output
-cat TRACES/trace.test.$SLURM_JOBID | sed -e 's!JobId=!!' | sort -n | awk '{print $8,$9,$10,$15}' | awk -F'[=/ /]' '{split($0,a); print a[2], a[4], a[6], a[8] }' > "out_static_"$workload_name"_q"$2
+printf 'JobId;Nodes;NodeList;Submit time;Start time;End time;Wait time;Run time;Response time;Slowdown;Backfilled\n' > "o_$workload_name.csv"
+cat TRACES/trace.test.$SLURM_JOBID | sed -e 's!JobId=!!' | sort -n | awk '{print "JobId="$1,$12,$11,$8,$9,$10,$15}' | awk '-F[=/ /]' '{split($0,a); printf("%d;%d;%s;%d;%d;%d;%d;%d;%d;%f;%d\n",a[2],a[4],a[6],a[8],a[10],a[12],a[10]-a[8],a[12]-a[10],a[12]-a[8],(a[12]-a[8])/(a[12]-a[10]),a[14]) }' >> "o_"$workload_name".csv"
 
-cat TRACES/trace.test.$SLURM_JOBID | sed -e 's!JobId=!!' | sort -n | awk '{ print $1,$7,$8,$9,$10,$13 }' | awk -F'[=/ /]' '{split($0,a); printf("%s\t%s\t%s\t%s\t%s\t-1\t-1\t%s\t%s\t-1\t1\t-1\t-1\t-1\t-1\t-1\t-1\t-1\n",a[1]-1,a[5],a[7]-a[5],a[9]-a[7],a[11],a[11],a[3])}' > "out_static_"$workload_name"_q"$2.swf
+cat TRACES/trace.test.$SLURM_JOBID | sed -e 's!JobId=!!' | sort -n | awk '{print $8,$9,$10,$15}' | awk -F'[=/ /]' '{split($0,a); print a[2], a[4], a[6], a[8] }' > "o_"$workload_name
+
+cat TRACES/trace.test.$SLURM_JOBID | sed -e 's!JobId=!!' | sort -n | awk '{ print $1,$7,$8,$9,$10,$13 }' | awk -F'[=/ /]' '{split($0,a); printf("%s\t%s\t%s\t%s\t%s\t-1\t-1\t%s\t%s\t-1\t1\t-1\t-1\t-1\t-1\t-1\t-1\t-1\n",a[1]-1,a[5],a[7]-a[5],a[9]-a[7],a[11],a[11],a[3])}' > "o_"$workload_name".swf"

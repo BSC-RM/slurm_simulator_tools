@@ -9,7 +9,7 @@
 
 #echo "This is JOBCOMPSCRIPT test\n" >> /home/bsc19/bsc19620/RESOURCE_MANAGEMENT/scripts/TRACES/trace.test
 
-echo "JobId=$JOBID UserId=$UID GroupId=$GID Name=$JOBNAME JobState=$JOBSTATE Partition=$PARTITION TimeLimit=$LIMIT SubmitTime=$SUBMIT StartTime=$START EndTime=$END NodeList=$NODES NodeCnt=$NODECNT ProcCnt=$PROCS WorkDir=$WORK_DIR Backfilled=$BACKFILLED ScheduledWithMalleability=$MALLEABLE_SCHED LentForMalleability=$LENT" >> {DIR_WORK}/TRACES/trace.test.{ID_JOB}
+echo "JobId=$JOBID UserId=$UID GroupId=$GID Name=$JOBNAME JobState=$JOBSTATE Partition=$PARTITION TimeLimit=$LIMIT SubmitTime=$SUBMIT StartTime=$START EndTime=$END NodeList=$NODES NodeCnt=$NODECNT ProcCnt=$PROCS WorkDir=$WORK_DIR Backfilled=$BACKFILLED" >> {DIR_WORK}/TRACES/trace.test.{ID_JOB}
 
 #The plugin sets up the environment for the program to contain the following variables:
 #ACCOUNT:   Job's account value
