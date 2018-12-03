@@ -17,3 +17,6 @@ Analyze output:
 	*list of: submit time, start time, end time per job
 	*sfw format
 	*csv format: more detailed, including metrics calculation and nodelist per job
+	
+Citing the BSC Slurm Simulator:
+"Evaluating SLURM Simulator with Real-Machine SLURM and Vice Versa", Ana Jokanovic, Marco D'Amico, Julita Corbalan, Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS18)At: ACM/IEEE Supercomputing 2018 (SC18), Dallas, TX, USA
