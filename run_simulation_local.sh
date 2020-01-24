@@ -1,14 +1,14 @@
 #!/bin/bash -xe
 workload_name=$(basename $1)
-sim_path=$PWD"/simulation_"$$$workload_name"bfq"$2
+sim_path=$PWD"/simulation_"$$$workload_name
 rm -rf $sim_path
 
 mkdir -p $sim_path
 cp -r install/* $sim_path
 workload=$1
-control_host=$(hostname)
-
-slave_nnodes= #EDIT: number of computing nodes
+#control_host=$(hostname)
+control_host=localhost
+slave_nnodes=1024 #EDIT: number of computing nodes
 
 slurm_conf_template="$sim_path/slurm_conf/slurm.conf.template"
 
@@ -34,12 +34,12 @@ sed -e s/{ID_JOB}/$$/ \
 chmod +x slurm_varios/trace.sh
 
 sed -e s:TOKEN_SLURM_USER_PATH:$sim_path: \
-    -e s:TOKEN_BF_QUEUE:$2: \
+    -e s:TOKEN_BF_QUEUE:1000: \
     -e s:TOKEN_CONTROL_MACHINE:$control_host: \
     -e s:TOKEN_NNODES:$slave_nnodes: \
     -e s:TOKEN_SLURMCTLD_PORT:$slurmctld_port-$slurmctld_f_port: \
     -e s:TOKEN_SLURMD_PORT:$slurmd_port: \
-    -e s:TOKEN_CORES:$3: \
+    -e s:TOKEN_CORES:8: \
     $slurm_conf_template > $sim_path/slurm_conf/slurm.conf
 
 source env.sh
