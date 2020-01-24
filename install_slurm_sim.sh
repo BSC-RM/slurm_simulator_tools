@@ -4,7 +4,7 @@ work_dir=`pwd`
 slurm_install_dir="${work_dir}/install"
 slurm_source_dir="${work_dir}/slurm_simulator"
 
-slurm_branch="bsc_simulator_v14"
+slurm_branch="bsc_simulator_v17"
 if [ ! -d "$slurm_source_dir" ]; then
     echo "Downloading Slurm code from Github"
     git clone https://github.com/BSC-RM/slurm_simulator.git

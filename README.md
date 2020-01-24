@@ -9,7 +9,8 @@ To prepare input:
 To run the simulation:
 - In your laptop, run: ./run_simulation_local.sh [workload path] [param list]
 - On a Slurm system, run: sbatch submit_simulation.sh [workload path] [param list]
-- param list is the list of parameters that you change in slurm.conf, default parameters are numebr of cpus per node and number of tested jobs by backfill (this is a new parameter)
+- param list is the list of parameters that you can dynamically edit at each run. This is implemented by using sed and TOKENS in the slurm.conf template. Please take a look at run_simulation_local.sh. Default script has TOKEN_CORES and TOKEN_BF_QUEUE, but they are currently set to a fixed number.
+- Run a first example by: ./run_simulation_local.sh $COMPLETE_PATH/workloads/cirne_workload
 
 Analyze output:
 - The simulator is configured to write output in: simulation_folder/TRACES

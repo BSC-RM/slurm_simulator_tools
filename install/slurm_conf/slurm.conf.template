@@ -16,7 +16,9 @@ ReturnToService=1
 #SlurmdPort=68189
 SlurmctldPort=TOKEN_SLURMCTLD_PORT
 SlurmdPort=TOKEN_SLURMD_PORT
-CredType=cred/none
+CryptoType=crypto/openssl
+#For Slurm v19
+#CredType=cred/none
 JobCredentialPrivateKey=TOKEN_SLURM_USER_PATH/slurm_conf/slurm.key
 JobCredentialPublicCertificate=TOKEN_SLURM_USER_PATH/slurm_conf/slurm.cert
 PluginDir=TOKEN_SLURM_USER_PATH/slurm_programs/lib/slurm
