@@ -9,7 +9,8 @@ workload=$1
 #control_host=$(hostname)
 control_host=localhost
 slave_nnodes=1024 #EDIT: number of computing nodes
-
+user=`(whoami)`
+uid=`id -u`
 slurm_conf_template="$sim_path/slurm_conf/slurm.conf.template"
 
 slurmctld_port=$((($$%65535))) #12 is the max number of jobs that can enter mn4 node
@@ -33,7 +34,8 @@ sed -e s/{ID_JOB}/$$/ \
 
 chmod +x slurm_varios/trace.sh
 
-sed -e s:TOKEN_SLURM_USER_PATH:$sim_path: \
+sed -e s:TOKEN_USER:$user: \
+    -e s:TOKEN_SLURM_USER_PATH:$sim_path: \
     -e s:TOKEN_BF_QUEUE:1000: \
     -e s:TOKEN_CONTROL_MACHINE:$control_host: \
     -e s:TOKEN_NNODES:$slave_nnodes: \
@@ -41,6 +43,10 @@ sed -e s:TOKEN_SLURM_USER_PATH:$sim_path: \
     -e s:TOKEN_SLURMD_PORT:$slurmd_port: \
     -e s:TOKEN_CORES:8: \
     $slurm_conf_template > $sim_path/slurm_conf/slurm.conf
+
+if ! grep -q $user:$uid $sim_path/slurm_conf/users.sim ; then
+    echo $user:$uid >> $sim_path/slurm_conf/users.sim
+fi
 
 source env.sh
 #slurmdbd

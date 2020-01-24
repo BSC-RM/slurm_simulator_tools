@@ -2,8 +2,8 @@
 AuthType=auth/none
 #AuthType=auth/munge
 ###UsePAM=0
-SlurmUser=marcodamico
-SlurmdUser=marcodamico
+SlurmUser=TOKEN_USER
+SlurmdUser=TOKEN_USER
 ControlMachine=TOKEN_CONTROL_MACHINE #ubuntu
 ControlAddr=TOKEN_CONTROL_MACHINE #ubuntu
 SlurmctldTimeout=65533
