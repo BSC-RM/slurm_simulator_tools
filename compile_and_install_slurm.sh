@@ -18,7 +18,7 @@ mkdir -p "${install_dir}/slurm_varios/log"
 
 export LIBS=-lrt
 
-export CFLAGS="-D SLURM_SIMULATOR -g0 -O3 -D NDEBUG=1"
+export CFLAGS="-D SLURM_SIMULATOR -g0 -O3 -D NDEBUG=1 -fno-omit-frame-pointer -fcommon"
 
 cd "${slurm_source_dir}"
 
@@ -30,8 +30,7 @@ echo "Running Configure"
 --mandir=$install_dir/slurm_varios/man \
 --prefix=$install_dir/slurm_programs \
 --sysconfdir=$install_dir/slurm_conf \
---enable-front-end --disable-debug \
---enable-simulator 2> slurm_configure.log
+--enable-front-end --disable-debug 2> slurm_configure.log
 
 echo "Compiling"
 make -j4

@@ -4,7 +4,7 @@ work_dir=`pwd`
 slurm_install_dir="${work_dir}/install"
 slurm_source_dir="${work_dir}/slurm_simulator"
 
-slurm_branch="bsc_simulator_v17"
+slurm_branch="bsc_simulator_v19"
 if [ ! -d "$slurm_source_dir" ]; then
     echo "Downloading Slurm code from Github"
     git clone https://github.com/BSC-RM/slurm_simulator.git
@@ -17,6 +17,7 @@ fi
 cd $slurm_source_dir
 echo "Regenerating automake Makefiles in SLURM"
 #./autogen.sh > ../autogen.output.txt
+autoreconf -fiv
 
 cd $work_dir
 
