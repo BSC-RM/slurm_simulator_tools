@@ -10,6 +10,8 @@ while(<>){
         $mjwait=$3;
         $mjreq=$9;
         $mjncompsubmit=1;
+        $uid=$12;
+        $gid=$13;
         $cjid=$1;
         $cjname=-1;
         $cjwait=$3;
@@ -17,35 +19,40 @@ while(<>){
         $cjstatus=$11;
         $execnum=$14;
         $part_req=$16;
-        $nnodes_req=$8; #only if the traces logs the number of nodes instead of the number of processes (or 1 node = 1 processor)
+        $nnodes_req=$8;      #only if the traces logs the number of nodes instead of the number of processes (or 1 node = 1 processor)
+                             #divide by the number of cores per node otherwise
         $npnode_req=1;
-        $nthrpproc_req=48;
-        $mem_req=$10;
+        $ncoresproc_req=-1;
+        $ncoresnode_req=-1;  #set this to $8/$nnodes_req if swf specifies total number of cores
+        $gpus_req=-1;
+        $mem_req=$10;        #SWF is per processor, MWF per node, mutliply by number of processors per node
         $freq_req=-1;
-        $nam_req=-1;
-        $localstrg_req=-1;
-        $network_req=-1;
-        $constraint=-1;
-        $hint=-1;
+        $ref_pow=-1;
+        $constraint="queue:{$15}";
         $licence_req=-1;
         $compmoduleid=0;
         $part_alloc=$16;
-        $nnodes_alloc=$5;
+        $nnodes_alloc=$5;    #same as nnodes_req
         $npnode_alloc=1;
-        $nthrpproc_alloc=48;
-        $mem_alloc=$7;
+        $ncoresproc_alloc=-1;
+        $ncoresnode_alloc=-1 #same as ncoresnode_req
+        $gpus_alloc=-1;
+        $mem_alloc=$7;       #same as mem_req
+        $avgcputime=$6;
         $freq_alloc=-1;
-        $nam_alloc=-1;
-        $localstrg_alloc=-1;
-        $network_alloc=-1;
+        $pow=-1;
+        $constraint_alloc=-1;
         $licence_alloc=-1;
         $aftercompjid=$17;
-        if($17) {
+        if($17 != -1) {
             $deptype=3;
         }
         else $deptype=-1;
         $compthinktime=$18;
-        print " $mjid $mjncomp $mjname $mjsubmit $mjwait $mjreq $mjncompsubmit $cjid $cjname $cjwait $cjrun $cjstatus $execnum $part_req $nnodes_req $npnode_req $nthrpproc_req $mem_req $freq_req $nam_req $localstrg_req $network_req $constraint $hint $licence_req $compmoduleid $part_alloc $nnodes_alloc $npnode_alloc $nthrpproc_alloc $mem_alloc $freq_alloc $nam_alloc $localstrg_alloc $network_alloc $licence_alloc $aftercompjid $deptype $compthinktime\n";
+        $event_list=-1;
+        print " $mjid $mjncomp $mjname $mjsubmit $mjwait $mjreq $mjncompsubmit $uid $gid $cjid $cjname $cjwait $cjrun $cjstatus $execnum $part_req $nnodes_req $npnode_req $ncoresproc_req $ncoresnode_req $gpus_req 
+        $mem_req $freq_req $ref_pow $constraint $licence_req $compmoduleid $part_alloc $nnodes_alloc $npnode_alloc $ncoresproc_alloc $ncoresnode_alloc $gpus_alloc $mem_alloc $avgcputime $freq_alloc $pow 
+        $constraint_alloc $licence_alloc $aftercompjid $deptype $compthinktime $event_list\n";
     }
     elsif(/.*; EndTime:.*/){
         print "$_";
