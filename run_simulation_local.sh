@@ -11,6 +11,7 @@ control_host=localhost
 slave_nnodes=1024 #EDIT: number of computing nodes
 user=`(whoami)`
 uid=`id -u`
+gid=`id -g`
 slurm_conf_template="$sim_path/slurm_conf/slurm.conf.template"
 
 slurmctld_port=$((($$%65535))) #12 is the max number of jobs that can enter mn4 node
@@ -44,8 +45,8 @@ sed -e s:TOKEN_USER:$user: \
     -e s:TOKEN_CORES:8: \
     $slurm_conf_template > $sim_path/slurm_conf/slurm.conf
 
-if ! grep -q $user:$uid $sim_path/slurm_conf/users.sim ; then
-    echo $user:$uid >> $sim_path/slurm_conf/users.sim
+if ! grep -q $user:$uid:$gid $sim_path/slurm_conf/users.sim ; then
+    echo $user:$uid:$gid >> $sim_path/slurm_conf/users.sim
 fi
 
 source env.sh
